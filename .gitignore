@@ -22,6 +22,10 @@ data/
 errorlog.txt
 gamelog.txt
 
+# Legends XML exports (too large for Git, can be regenerated from saves)
+# Keep XML fragments for testing scripts
+region*-legends.xml
+
 # ============================================================================
 # Python Environment & Cache
 # ============================================================================
@@ -83,5 +87,5 @@ Thumbs.db
 !command line.txt
 !file changes.txt
 
-# Note: By default, .txt, .xml, and .md files at the root level will be tracked
-# unless specifically ignored above (like errorlog.txt and gamelog.txt)
+# Note: By default, .txt, .xml (except region*-legends.xml), and .md files
+# at the root level will be tracked unless specifically ignored above
