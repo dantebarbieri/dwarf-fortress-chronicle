@@ -81,11 +81,7 @@ Thumbs.db
 # These patterns ensure chronicle content is tracked even if other patterns match
 !chronicle/
 !chronicle/*.md
-!*.xml
-!readme.txt
-!release notes.txt
-!command line.txt
-!file changes.txt
 
-# Note: By default, .txt, .xml (except region*-legends.xml), and .md files
-# at the root level will be tracked unless specifically ignored above
+# Note: By default, files are tracked unless explicitly ignored above.
+# XML test fragments, .md files, and most .txt files will be tracked.
+# Ignored: region*-legends.xml, errorlog.txt, gamelog.txt, and everything in data/
