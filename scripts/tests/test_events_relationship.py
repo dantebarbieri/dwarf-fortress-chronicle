@@ -355,3 +355,150 @@ class TestRelationships:
                        xml_path=str(sample_xml_path))
         assert r.returncode != 0
         assert "no historical figure" in r.stderr.lower() or "error" in r.stderr.lower()
+
+
+# ===================================================================
+# Events edge cases with fixture files
+# ===================================================================
+
+
+class TestEventsEmptyWorld:
+    """events.py on empty_world.xml should return a 'no events' message."""
+
+    def test_events_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "100",
+                       xml_path=str(empty_world_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "no events" in out or "0 events" in out or "0 of 0" in out
+
+    def test_events_summary_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "100", "--summary",
+                       xml_path=str(empty_world_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "0 events" in out or "no events" in out
+
+
+class TestEventsPeacefulYears:
+    """Gap years in peaceful_years.xml should return empty results."""
+
+    def test_gap_year_empty(self, df_root: Path, peaceful_years_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "75",
+                       xml_path=str(peaceful_years_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "no events" in out or "0 events" in out or "0 of 0" in out
+
+    def test_gap_year_range_empty(self, df_root: Path, peaceful_years_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year-from", "60", "--year-to", "90",
+                       xml_path=str(peaceful_years_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "no events" in out or "0 events" in out or "0 of 0" in out
+
+    def test_year_50_has_events(self, df_root: Path, peaceful_years_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "50",
+                       xml_path=str(peaceful_years_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "4 of 4" in out or "showing 4" in out
+
+    def test_year_100_has_events(self, df_root: Path, peaceful_years_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "100",
+                       xml_path=str(peaceful_years_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "2 of 2" in out or "showing 2" in out
+
+    def test_year_from_year_to_full_range(self, df_root: Path, peaceful_years_xml_path: Path) -> None:
+        """--year-from / --year-to covering both event years gets all events."""
+        r = run_script(df_root, "events.py", "--year-from", "1", "--year-to", "200",
+                       xml_path=str(peaceful_years_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "6 of 6" in out or "showing 6" in out
+
+
+class TestRelationshipsUnrelated:
+    """Relationship between unrelated figures (no shared events)."""
+
+    def test_unrelated_figures(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """Scald cinderjaw (dragon) and bomrek wetlungs (drowned dwarf) have no
+        direct relationship link — but the analysis should still run."""
+        r = run_script(df_root, "relationship_history.py",
+                       "scald cinderjaw", "bomrek wetlungs",
+                       xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "scald" in out
+        assert "bomrek" in out
+
+    def test_unrelated_figures_json(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "scald cinderjaw", "bomrek wetlungs", "--json",
+                       xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0
+        import json
+        data = json.loads(r.stdout)
+        assert "direct_relationships" in data
+        # No direct link between these two
+        assert len(data["direct_relationships"]) == 0
+
+
+class TestEventsCombinedFilters:
+    """Events with combined filters (--type + --site + --year)."""
+
+    def test_combined_type_site_year(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py",
+                       "--year", "95", "--type", "hf died", "--site", "700",
+                       xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "hf died" in out
+        # Only Ingiz died in year 95
+        assert "1 of 1" in out
+
+    def test_combined_filters_no_match(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """Combine filters that produce zero results — script may exit non-zero
+        or print a 'not found' message when the event type doesn't exist."""
+        r = run_script(df_root, "events.py",
+                       "--year", "80", "--type", "masterpiece item",
+                       xml_path=str(dead_figures_xml_path))
+        combined = (r.stdout + r.stderr).lower()
+        assert "no event" in combined or "not found" in combined or "0 of 0" in combined or r.returncode != 0
+
+
+class TestEventsYearFromYearTo:
+    """Verify --year-from and --year-to work correctly (ported filter_year coverage)."""
+
+    def test_year_from_only(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """--year-from without --year-to includes all events from that year onward."""
+        r = run_script(df_root, "events.py", "--year-from", "92",
+                       xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Events in years 92, 95 should appear
+        assert "event" in out
+
+    def test_year_to_only(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """--year-to without --year-from includes all events up to that year."""
+        r = run_script(df_root, "events.py", "--year-to", "85",
+                       xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Events in years 80, 85 should appear
+        assert "event" in out
+
+    def test_year_range_inclusive(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """Year range is inclusive on both ends."""
+        r = run_script(df_root, "events.py",
+                       "--year-from", "90", "--year-to", "92", "--json",
+                       xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0
+        import json
+        data = json.loads(r.stdout)
+        years = {e["year"] for e in data}
+        # Should include year 90 (2 events) and year 92 (1 event)
+        assert "90" in years
+        assert "92" in years

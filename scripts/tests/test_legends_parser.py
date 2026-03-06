@@ -370,3 +370,113 @@ class TestContextManager:
             assert sanitized is not None
             assert sanitized.exists()
         assert not sanitized.exists()
+
+
+# =========================================================================
+# Empty World (empty_world.xml)
+# =========================================================================
+
+
+class TestEmptyWorld:
+    """Loading empty_world.xml should produce empty maps without errors."""
+
+    def test_empty_hf_map(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.hf_map) == 0
+
+    def test_empty_entity_map(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.entity_map) == 0
+
+    def test_empty_site_map(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.site_map) == 0
+
+    def test_empty_artifact_map(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.artifact_map) == 0
+
+    def test_empty_events(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.events) == 0
+
+    def test_empty_event_collections(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.event_collections) == 0
+
+    def test_empty_written_contents(self, empty_world_xml_path):
+        with LegendsParser(str(empty_world_xml_path)) as lp:
+            assert len(lp.written_contents) == 0
+
+
+# =========================================================================
+# Dead Figures (dead_figures.xml)
+# =========================================================================
+
+
+class TestDeadFigures:
+    """Dead HFs in dead_figures.xml should have correct death_year != -1."""
+
+    def test_dead_figure_count(self, dead_figures_xml_path):
+        with LegendsParser(str(dead_figures_xml_path)) as lp:
+            dead = [hf for hf in lp.hf_map.values() if hf["death_year"] != "-1"]
+            assert len(dead) == 5, f"Expected 5 dead figures, got {len(dead)}"
+
+    def test_alive_figure_count(self, dead_figures_xml_path):
+        with LegendsParser(str(dead_figures_xml_path)) as lp:
+            alive = [hf for hf in lp.hf_map.values() if hf["death_year"] == "-1"]
+            assert len(alive) == 2, f"Expected 2 alive figures, got {len(alive)}"
+
+    def test_ingiz_death_year(self, dead_figures_xml_path):
+        with LegendsParser(str(dead_figures_xml_path)) as lp:
+            hf = lp.hf_map["710"]
+            assert hf["death_year"] == "95"
+
+    def test_erush_death_year_old_age(self, dead_figures_xml_path):
+        with LegendsParser(str(dead_figures_xml_path)) as lp:
+            hf = lp.hf_map["712"]
+            assert hf["death_year"] == "80"
+
+    def test_bomrek_death_year_drowned(self, dead_figures_xml_path):
+        with LegendsParser(str(dead_figures_xml_path)) as lp:
+            hf = lp.hf_map["715"]
+            assert hf["death_year"] == "85"
+
+    def test_death_events_have_correct_causes(self, dead_figures_xml_path):
+        with LegendsParser(str(dead_figures_xml_path)) as lp:
+            died_events = [e for e in lp.events if e.get("type") == "hf died"]
+            causes = {e.get("hfid"): e.get("cause") for e in died_events}
+            assert causes["710"] == "struck"
+            assert causes["712"] == "old age"
+            assert causes["715"] == "drowned"
+            assert causes["716"] == "thirst"
+
+
+# =========================================================================
+# Year-range filtering with peaceful_years.xml (gap years)
+# =========================================================================
+
+
+class TestPeacefulYearsFiltering:
+    """peaceful_years.xml has events in year 50 and 100 only — gap years
+    between them should return empty results."""
+
+    def test_gap_year_returns_empty(self, peaceful_years_xml_path):
+        with LegendsParser(str(peaceful_years_xml_path)) as lp:
+            events = lp.filter_events(year_from=60, year_to=90)
+            assert len(events) == 0, "Gap years 60-90 should have no events"
+
+    def test_year_50_has_events(self, peaceful_years_xml_path):
+        with LegendsParser(str(peaceful_years_xml_path)) as lp:
+            events = lp.filter_events(year_from=50, year_to=50)
+            assert len(events) == 4
+
+    def test_year_100_has_events(self, peaceful_years_xml_path):
+        with LegendsParser(str(peaceful_years_xml_path)) as lp:
+            events = lp.filter_events(year_from=100, year_to=100)
+            assert len(events) == 2
+
+    def test_full_range_includes_all(self, peaceful_years_xml_path):
+        with LegendsParser(str(peaceful_years_xml_path)) as lp:
+            events = lp.filter_events(year_from=1, year_to=200)
+            assert len(events) == 6

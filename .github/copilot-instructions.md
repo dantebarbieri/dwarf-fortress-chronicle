@@ -356,6 +356,140 @@ python scripts/relationship_history.py "atir roughlearning" "unib townveiled" --
 
 Shows: direct relationships, shared entity memberships, shared site connections, shared events, family network (BFS up to 3 hops for 2 figures), chronological timeline summary. Useful for understanding pairs (e.g., Atir and Unib), squads of invaders, or why a migrant arrived without family.
 
+#### `scripts/whats_new.py` — What Changed Since Year N
+
+The recommended opening move for every chronicle update session. Shows all events from a given year onward, grouped by year and season, categorized by type.
+
+```
+python scripts/whats_new.py --since-year 101
+python scripts/whats_new.py --since-year 100 --site luregold
+python scripts/whats_new.py --since-year 100 --entity "guilds of clinching" --json
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `--since-year N` | Show events from this year onward (required) |
+| `--site SITE` | Filter to events at this site (name or ID) |
+| `--entity ENTITY` | Filter to events involving this entity (name or ID) |
+
+Shows: events grouped by year → season → category (Arrivals, Deaths, Artifacts, Wars/Battles, Trade, Diplomacy, Construction, Other), with human-readable descriptions and event IDs.
+
+#### `scripts/migrations.py` — Migration Wave Tracker
+
+Lists all figures who settled at a site, grouped by arrival wave (same timestamp = same wave). Each settler includes a detailed profile.
+
+```
+python scripts/migrations.py luregold --year 100
+python scripts/migrations.py luregold --year-from 99 --year-to 102
+python scripts/migrations.py 794 --year 99 --json
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `name` (positional) | Site name (partial, case-insensitive) or numeric site ID |
+| `--year N` | Filter to a single year |
+| `--year-from N` | Start of year range (inclusive) |
+| `--year-to N` | End of year range (inclusive) |
+
+At least one year filter is required.
+
+Shows: migration waves with settler profiles (name, race, caste, age, profession, top 3 skills, family links, entity memberships), wave totals.
+
+#### `scripts/population.py` — Population Census
+
+Tracks population changes at a site over time by analysing arrivals, deaths, and departures. Computes running totals year by year.
+
+```
+python scripts/population.py luregold
+python scripts/population.py luregold --year-from 99 --year-to 102
+python scripts/population.py luregold --by-race --json
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `name` (positional) | Site name or numeric ID |
+| `--by-race` | Break down population by race |
+
+Shows: per-year arrivals/deaths/departures with names, running end-of-year population, optional race breakdown.
+
+#### `scripts/deaths.py` — Death/Obituary Tracker
+
+Tracks who died, how, when, and by whose hand. Powers Atir's "reckoning of the dead" chronicle sections.
+
+```
+python scripts/deaths.py --year 101
+python scripts/deaths.py --year-from 100 --year-to 102 --site luregold
+python scripts/deaths.py --entity "guilds of clinching" --year 101 --json
+python scripts/deaths.py --figure "sibrek" --year-from 100
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `--site SITE` | Filter to deaths at this site (name or ID) |
+| `--entity ENTITY` | Filter to deaths of members of this entity (name or ID) |
+| `--figure FIGURE` | Filter to a specific figure's death (name or ID) |
+
+At least one year filter (`--year`, `--year-from`, or `--year-to`) is required.
+
+Shows: chronological death records with name, race, caste, age, cause of death, slayer info, location, entity memberships, and a `[NOTABLE]` flag for figures who held positions or had high skills.
+
+#### `scripts/interactions.py` — Entity-to-Entity Interaction Log
+
+Shows all interactions between two entities over time: wars, battles, trade, diplomacy, site captures. Helps Atir understand civ-level relationships.
+
+```
+python scripts/interactions.py "guilds of clinching" "the dark horde"
+python scripts/interactions.py 258 102 --year-from 100 --json
+python scripts/interactions.py "guilds of clinching" "dark horde" --category wars
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `entity1` (positional) | First entity name or ID |
+| `entity2` (positional) | Second entity name or ID |
+| `--category CAT` | Filter to a category: `wars`, `battles`, `trade`, `diplomacy`, `site_captures`, `other`, or `all` (default: `all`) |
+
+Shows: interactions grouped by category with chronological detail — war aggressor/defender and battle counts, battle force sizes and casualties, trade events, diplomatic actions, site captures.
+
+#### `scripts/moods.py` — Mood & Artifact Creation Tracker
+
+Tracks strange moods, artifact creation, and masterwork production grouped by historical figure.
+
+```
+python scripts/moods.py --year 100
+python scripts/moods.py --year-from 99 --year-to 102 --site luregold
+python scripts/moods.py --figure "ushrir beardedspears" --json
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `--site SITE` | Filter by site name or ID |
+| `--figure FIGURE` | Filter by figure name or ID |
+
+At least one year filter (`--year`, `--year-from`, or `--year-to`) is required.
+
+Shows: per-figure chronological list of masterwork counts (with skill level), artifact creations (with artifact name and type), and mood state changes. Summary totals for figures, masterworks, and artifacts.
+
+#### `scripts/megabeasts.py` — Megabeast/FB/Titan Tracker
+
+Lists megabeasts, forgotten beasts, titans, and demons (any non-standard-race historical figure), sorted by kill count.
+
+```
+python scripts/megabeasts.py
+python scripts/megabeasts.py --alive-only
+python scripts/megabeasts.py --min-kills 5 --json
+python scripts/megabeasts.py --race DRAGON --dead-only
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `--alive-only` | Show only living megabeasts |
+| `--dead-only` | Show only dead megabeasts |
+| `--min-kills N` | Only show figures with at least N kills |
+| `--race RACE` | Filter by race (e.g. DRAGON, GIANT) |
+
+Shows: name, race, status (alive/dead with slayer info), kill list (top 10 with victim names and races), spheres of influence, last known location for living creatures.
+
 ### Writing Custom Extraction Scripts
 
 When writing new scripts for one-off extractions:

@@ -226,4 +226,118 @@ class TestFilterCreature:
         assert "enemy" in out
 
 
+# ===================================================================
+# Empty world edge cases
+# ===================================================================
+
+
+class TestEmptyWorldCivilization:
+    """civilization.py should handle empty XML gracefully."""
+
+    SCRIPT = "civilization.py"
+
+    def test_civ_not_found_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "anything", xml_path=str(empty_world_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "no entity" in combined or "error" in combined or "no " in combined
+
+
+class TestEmptyWorldSite:
+    """site.py should handle empty XML gracefully."""
+
+    SCRIPT = "site.py"
+
+    def test_site_not_found_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "anything", xml_path=str(empty_world_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "no site" in combined or "error" in combined or "no " in combined
+
+
+class TestEmptyWorldCreature:
+    """creature.py should handle empty XML gracefully."""
+
+    SCRIPT = "creature.py"
+
+    def test_creature_not_found_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "anything", xml_path=str(empty_world_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "no " in combined or "error" in combined
+
+
+# ===================================================================
+# Dead figures: creature.py should show death info
+# ===================================================================
+
+
+class TestDeadFigureCreature:
+    """creature.py should display death info for dead figures."""
+
+    SCRIPT = "creature.py"
+
+    def test_dead_figure_struck(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "ingiz axefall", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "ingiz axefall" in out
+        assert "95" in out  # death year
+
+    def test_dead_figure_old_age(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "erush lonelypick", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "erush lonelypick" in out
+        assert "80" in out  # death year
+
+    def test_dead_figure_drowned(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "bomrek wetlungs", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "bomrek wetlungs" in out
+        assert "85" in out  # death year
+
+
+# ===================================================================
+# Civilization with no members (empty_world.xml)
+# ===================================================================
+
+
+class TestCivNoMembers:
+    """civilization.py with empty world — no entity to find at all."""
+
+    SCRIPT = "civilization.py"
+
+    def test_no_entity_in_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "guilds", xml_path=str(empty_world_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "no entity" in combined or "error" in combined or "no " in combined
+
+
+# ===================================================================
+# Site with no structures (empty_world.xml)
+# ===================================================================
+
+
+class TestSiteNoStructures:
+    """site.py with empty world — no site to find at all."""
+
+    SCRIPT = "site.py"
+
+    def test_no_site_in_empty_world(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "testfort", xml_path=str(empty_world_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "no site" in combined or "error" in combined or "no " in combined
+
+    def test_site_no_structures_dead_figures(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """gravehall in dead_figures.xml has no structures — should still show overview."""
+        r = run_script(df_root, self.SCRIPT, "gravehall", "--structures", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "gravehall" in out
+
+
 

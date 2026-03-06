@@ -256,3 +256,131 @@ class TestBattlesJson:
         battle = data[0]
         assert "name" in battle
         assert "siege of testfort" in battle["name"].lower()
+
+
+# ===================================================================
+# multi_war.xml: multiple concurrent conflicts
+# ===================================================================
+
+
+class TestMultiWarWars:
+    """Multiple wars from multi_war.xml should all appear."""
+
+    def test_all_wars_listed(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "wars", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "war of iron and fang" in out
+        assert "crossroads conflict" in out
+
+    def test_wars_json_count(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "wars", "--json", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        data = json.loads(r.stdout)
+        assert len(data) == 2
+
+    def test_active_wars_only(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "wars", "--active", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        # Only "the war of iron and fang" is active (end_year=-1)
+        assert "war of iron and fang" in out
+        # The crossroads conflict is finished — should not appear
+        assert "crossroads conflict" not in out
+
+
+class TestMultiWarBattles:
+    """Battles from multi_war.xml."""
+
+    def test_all_battles_listed(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "battles", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "assault on shieldvault" in out
+        assert "raid on hatespike" in out
+        assert "battle of crossroads" in out
+
+    def test_battles_json_count(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "battles", "--json", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        data = json.loads(r.stdout)
+        assert len(data) == 3
+
+
+class TestMultiWarBattleDetail:
+    """Battle detail from multi_war fixture."""
+
+    def test_battle_detail_assault(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "detail", "951", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "assault on shieldvault" in out
+        assert "100" in out  # year
+        assert "9000" in out or "9001" in out or "9002" in out  # event IDs
+
+    def test_battle_detail_crossroads(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "detail", "961", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "battle of crossroads" in out
+        assert "105" in out  # year
+
+    def test_war_detail_shows_sub_battles(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "detail", "950", xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "war of iron and fang" in out
+        # Should reference sub-collections 951 and 952
+        assert "951" in out
+        assert "952" in out
+
+
+class TestMultiWarByEntity:
+    """Wars filtered by entity in multi_war fixture."""
+
+    def test_wars_by_dwarf_entity(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "wars", "--entity", "shields of order",
+                       xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "war of iron and fang" in out
+        # Dwarves are not in the crossroads conflict
+        assert "crossroads" not in out
+
+    def test_wars_by_goblin_entity(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "wars", "--entity", "dark fangs",
+                       xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        # Goblins are in both wars
+        assert "war of iron and fang" in out
+        assert "crossroads conflict" in out
+
+    def test_wars_by_human_entity(self, df_root: Path, multi_war_xml_path: Path) -> None:
+        r = run_script(df_root, "battle.py", "wars", "--entity", "crossroads alliance",
+                       xml_path=str(multi_war_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "crossroads conflict" in out
+        # Humans are not in the dwarf-goblin war
+        assert "war of iron and fang" not in out
+
+
+# ===================================================================
+# Artifacts in empty world
+# ===================================================================
+
+
+class TestArtifactEmptyWorld:
+    """Artifacts in empty_world.xml should return appropriate message."""
+
+    def test_artifact_list_empty(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, "artifact.py", xml_path=str(empty_world_xml_path))
+        assert r.returncode == 0, f"stderr: {r.stderr}"
+        out = r.stdout.lower()
+        assert "no artifact" in out or "0 artifact" in out or out.strip() == ""
+
+    def test_artifact_search_empty(self, df_root: Path, empty_world_xml_path: Path) -> None:
+        r = run_script(df_root, "artifact.py", "anything", xml_path=str(empty_world_xml_path))
+        combined = (r.stdout + r.stderr).lower()
+        assert "no artifact" in combined or "error" in combined or r.returncode != 0

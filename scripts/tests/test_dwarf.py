@@ -282,3 +282,150 @@ class TestDwarfSkills:
         # WHIP at 23500 IP → Accomplished
         assert "WHIP" in out
         assert "Accomplished" in out
+
+
+# ===================================================================
+# Dead figure profile (dead_figures.xml)
+# ===================================================================
+
+
+class TestDeadFigureProfile:
+    """figure.py should show death year and cause for dead figures."""
+
+    SCRIPT = "figure.py"
+
+    def test_dead_figure_shows_death_year(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "ingiz axefall", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        assert "95" in out  # death year
+        assert "ingiz" in out.lower()
+
+    def test_dead_figure_old_age(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "erush lonelypick", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        assert "80" in out  # death year
+        assert "erush" in out.lower()
+
+    def test_dead_megabeast_victim(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "asmel brightiron", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        assert "90" in out  # death year
+
+    def test_dead_figure_json_has_death_year(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "ingiz axefall", "--json", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        import json
+        data = json.loads(r.stdout)
+        assert data["identity"]["death_year"] == "95"
+
+
+# ===================================================================
+# Complex family tree (complex_families.xml)
+# ===================================================================
+
+
+class TestComplexFamilyTree:
+    """figure_relations.py --tree should display multi-generation tree."""
+
+    SCRIPT = "figure_relations.py"
+
+    def test_tree_grandparent(self, df_root: Path, complex_families_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "eral gemheart", "--tree", xml_path=str(complex_families_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        # Tree should show Eral and her descendants
+        assert "Eral Gemheart" in out
+        assert "[" in out and "]" in out
+        assert "|" in out
+
+    def test_tree_middle_generation(self, df_root: Path, complex_families_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "tosid ironbeard", "--tree", xml_path=str(complex_families_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        assert "Tosid Ironbeard" in out
+        # Should show parents and children
+        assert "Dastot Ironbeard" in out or "Eral Gemheart" in out
+
+    def test_relations_grandchild(self, df_root: Path, complex_families_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "led ironbeard", xml_path=str(complex_families_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        # Should list parents
+        assert "tosid ironbeard" in out
+        assert "aban copperkettle" in out
+
+    def test_relations_divorced_parents(self, df_root: Path, complex_families_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "mafol wanderstone", xml_path=str(complex_families_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        # Mafol's parents (divorced)
+        assert "udil ironbeard" in out or "rovod wanderstone" in out
+
+    def test_tree_great_grandchild(self, df_root: Path, complex_families_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "cilob ironbeard", "--tree", xml_path=str(complex_families_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        assert "Cilob Ironbeard" in out
+
+
+# ===================================================================
+# Figure with no skills
+# ===================================================================
+
+
+class TestFigureNoSkills:
+    """figure_skills.py should handle figures with minimal skills gracefully."""
+
+    SCRIPT = "figure_skills.py"
+
+    def test_great_grandchild_minimal_skills(self, df_root: Path, complex_families_xml_path: Path) -> None:
+        """Cilob (821) has only WRESTLING at 500 IP (Novice) — should still show."""
+        r = run_script(df_root, self.SCRIPT, "cilob ironbeard", xml_path=str(complex_families_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout
+        assert "WRESTLING" in out
+        assert "Novice" in out
+
+    def test_dragon_no_skills(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """Scald cinderjaw (714) has no skills — should not crash."""
+        r = run_script(df_root, self.SCRIPT, "scald cinderjaw", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "scald cinderjaw" in out
+        assert "no skills" in out or "skill" in out
+
+
+# ===================================================================
+# figure.py with --race filter
+# ===================================================================
+
+
+class TestFigureRaceFilter:
+    """figure.py --race should filter matches by race."""
+
+    SCRIPT = "figure.py"
+
+    def test_race_filter_dwarf(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """Searching for a broad term with --race DWARF should only show dwarves."""
+        r = run_script(df_root, self.SCRIPT, "goden hammerthane", "--race", "DWARF", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "dwarf" in out
+        assert "goden" in out
+
+    def test_race_filter_dragon(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "scald cinderjaw", "--race", "DRAGON", xml_path=str(dead_figures_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "dragon" in out
+        assert "scald" in out
+
+    def test_race_filter_no_match(self, df_root: Path, dead_figures_xml_path: Path) -> None:
+        """Searching for a dwarf name with --race GOBLIN should fail."""
+        r = run_script(df_root, self.SCRIPT, "goden hammerthane", "--race", "GOBLIN", xml_path=str(dead_figures_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "no " in combined or "error" in combined
