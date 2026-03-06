@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<df_world>
+<regions>
+<region><id>1</id><name>the quiet meadow</name><type>Grassland</type></region>
+</regions>
+<underground_regions></underground_regions>
+<sites>
+<site>
+  <id>1100</id><type>fortress</type><name>stillhearth</name>
+  <coords>35,45</coords><rectangle>560,720:563,723</rectangle>
+  <structures></structures>
+  <site_properties></site_properties>
+</site>
+</sites>
+<world_constructions></world_constructions>
+<artifacts></artifacts>
+<historical_figures>
+<historical_figure>
+  <id>1110</id><name>zefon calmstone</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>10</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>PLANTER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1100</entity_id></entity_link>
+  <hf_skill><skill>PLANT</skill><total_ip>20000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1111</id><name>tekkud steadyhand</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>12</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>COOK</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1100</entity_id></entity_link>
+  <hf_skill><skill>COOK</skill><total_ip>18000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1112</id><name>dodok silentpick</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>15</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>MINER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1100</entity_id></entity_link>
+  <hf_skill><skill>MINING</skill><total_ip>16000</total_ip></hf_skill>
+</historical_figure>
+</historical_figures>
+<entity_populations>
+<entity_population><id>1</id></entity_population>
+</entity_populations>
+<entities>
+<entity><id>1100</id><name>the still council</name></entity>
+</entities>
+<historical_events>
+<!-- Events in year 50 -->
+<historical_event>
+  <id>11000</id><year>50</year><seconds72>1000</seconds72><type>created site</type>
+  <civ_id>1100</civ_id><site_civ_id>1100</site_civ_id><site_id>1100</site_id>
+</historical_event>
+<historical_event>
+  <id>11001</id><year>50</year><seconds72>2000</seconds72><type>change hf state</type>
+  <hfid>1110</hfid><site_id>1100</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>11002</id><year>50</year><seconds72>2000</seconds72><type>change hf state</type>
+  <hfid>1111</hfid><site_id>1100</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>11003</id><year>50</year><seconds72>3000</seconds72><type>masterpiece item</type>
+  <hfid>1110</hfid><entity_id>1100</entity_id><site_id>1100</site_id>
+  <skill_at_time>14</skill_at_time><maker_hfid>1110</maker_hfid>
+</historical_event>
+<!-- 50 years of nothing -->
+<!-- Events in year 100 -->
+<historical_event>
+  <id>11004</id><year>100</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1112</hfid><site_id>1100</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>11005</id><year>100</year><seconds72>5000</seconds72><type>masterpiece item</type>
+  <hfid>1111</hfid><entity_id>1100</entity_id><site_id>1100</site_id>
+  <skill_at_time>28</skill_at_time><maker_hfid>1111</maker_hfid>
+</historical_event>
+</historical_events>
+<historical_event_collections></historical_event_collections>
+<historical_eras>
+<historical_era><name>The Age of Peace</name><start_year>0</start_year></historical_era>
+</historical_eras>
+<written_contents></written_contents>
+<poetic_forms></poetic_forms>
+<musical_forms></musical_forms>
+<dance_forms></dance_forms>
+</df_world>

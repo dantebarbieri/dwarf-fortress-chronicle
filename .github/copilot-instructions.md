@@ -223,25 +223,6 @@ python scripts/creature.py "atir" --list
 
 Shows: bio, entity affiliations, positions, relationships, skills, held artifacts, kills, events.
 
-#### `scripts/filter_year.py` — Events by Year
-
-```
-python scripts/filter_year.py --year 102
-python scripts/filter_year.py --year-from 100 --year-to 102 --site luregold
-python scripts/filter_year.py --year 101 --type "hf died" --summary
-```
-
-| Parameter | Description |
-|-----------|-------------|
-| `--type TYPE` | Filter by event type (partial match) |
-| `--site SITE` | Filter by site name or ID |
-| `--entity ENTITY` | Filter by entity name or ID |
-| `--figure FIGURE` | Filter by historical figure name or ID |
-| `--summary` | Show count-by-type summary instead of listing events |
-| `--limit N` | Maximum events to show |
-
-At least one year filter (`--year`, `--year-from`, or `--year-to`) is required.
-
 #### `scripts/figure.py` — Historical Figure Profile
 
 ```
@@ -332,9 +313,13 @@ Subcommands:
 
 #### `scripts/events.py` — General Event Browser
 
+The primary tool for year-based and general event filtering (replaces the former `filter_year.py`).
+
 ```
 python scripts/events.py --year 102 --site luregold
+python scripts/events.py --year-from 100 --year-to 102 --site luregold
 python scripts/events.py --type "hf died" --year-from 100
+python scripts/events.py --year 101 --type "hf died" --summary
 python scripts/events.py --figure "atir roughlearning" --summary
 python scripts/events.py --types
 ```
@@ -345,6 +330,9 @@ python scripts/events.py --types
 | `--site SITE` | Filter by site name or ID |
 | `--entity ENTITY` | Filter by entity name or ID |
 | `--figure FIGURE` | Filter by historical figure name or ID |
+| `--year N` | Filter to a single year |
+| `--year-from N` | Start of year range (inclusive) |
+| `--year-to N` | End of year range (inclusive) |
 | `--summary` | Count-by-type summary |
 | `--types` | List all event types and exit |
 | `--raw` | Show raw event dictionaries |

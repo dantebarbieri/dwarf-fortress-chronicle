@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<df_world>
+<regions>
+<region><id>1</id><name>the bloody plains</name><type>Grassland</type></region>
+</regions>
+<underground_regions></underground_regions>
+<sites>
+<site>
+  <id>700</id><type>fortress</type><name>gravehall</name>
+  <coords>15,25</coords><rectangle>240,400:243,403</rectangle>
+  <structures></structures>
+  <site_properties></site_properties>
+</site>
+</sites>
+<world_constructions></world_constructions>
+<artifacts></artifacts>
+<historical_figures>
+<!-- Dwarf killed in battle by another dwarf (struck) -->
+<historical_figure>
+  <id>710</id><name>ingiz axefall</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>30</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>95</death_year><death_seconds72>40000</death_seconds72>
+  <associated_type>AXEMAN</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>700</entity_id></entity_link>
+  <hf_skill><skill>AXE</skill><total_ip>12000</total_ip></hf_skill>
+</historical_figure>
+<!-- The slayer of ingiz -->
+<historical_figure>
+  <id>711</id><name>goden hammerthane</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>25</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>HAMMERMAN</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>700</entity_id></entity_link>
+  <hf_skill><skill>HAMMER</skill><total_ip>20000</total_ip></hf_skill>
+</historical_figure>
+<!-- Dwarf who died of old age -->
+<historical_figure>
+  <id>712</id><name>erush lonelypick</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>-100</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>80</death_year><death_seconds72>10000</death_seconds72>
+  <associated_type>MINER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>700</entity_id></entity_link>
+  <hf_skill><skill>MINING</skill><total_ip>25000</total_ip></hf_skill>
+</historical_figure>
+<!-- Figure killed by a megabeast (dragon) -->
+<historical_figure>
+  <id>713</id><name>asmel brightiron</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>40</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>90</death_year><death_seconds72>30000</death_seconds72>
+  <associated_type>SWORDSMAN</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>700</entity_id></entity_link>
+  <hf_skill><skill>SWORD</skill><total_ip>15000</total_ip></hf_skill>
+</historical_figure>
+<!-- The megabeast that killed asmel -->
+<historical_figure>
+  <id>714</id><name>scald cinderjaw</name><race>DRAGON</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>-200</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>STANDARD</associated_type>
+</historical_figure>
+<!-- Figure who drowned -->
+<historical_figure>
+  <id>715</id><name>bomrek wetlungs</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>60</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>85</death_year><death_seconds72>20000</death_seconds72>
+  <associated_type>FISHERMAN</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>700</entity_id></entity_link>
+  <hf_skill><skill>FISH</skill><total_ip>8000</total_ip></hf_skill>
+</historical_figure>
+<!-- Figure who died of thirst -->
+<historical_figure>
+  <id>716</id><name>tirist dustthroat</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>50</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>92</death_year><death_seconds72>5000</death_seconds72>
+  <associated_type>MASON</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>700</entity_id></entity_link>
+  <hf_skill><skill>MASONRY</skill><total_ip>10000</total_ip></hf_skill>
+</historical_figure>
+</historical_figures>
+<entity_populations>
+<entity_population><id>1</id></entity_population>
+</entity_populations>
+<entities>
+<entity><id>700</id><name>the order of graves</name></entity>
+</entities>
+<historical_events>
+<!-- Ingiz killed in battle by Goden (struck) -->
+<historical_event>
+  <id>7000</id><year>95</year><seconds72>39000</seconds72>
+  <type>hf simple battle event</type>
+  <group_1_hfid>711</group_1_hfid><group_2_hfid>710</group_2_hfid>
+  <site_id>700</site_id><subregion_id>-1</subregion_id>
+</historical_event>
+<historical_event>
+  <id>7001</id><year>95</year><seconds72>40000</seconds72><type>hf died</type>
+  <hfid>710</hfid><slayer_hfid>711</slayer_hfid><site_id>700</site_id>
+  <cause>struck</cause><slayer_race>DWARF</slayer_race><slayer_caste>MALE</slayer_caste>
+</historical_event>
+<!-- Erush died of old age -->
+<historical_event>
+  <id>7002</id><year>80</year><seconds72>10000</seconds72><type>hf died</type>
+  <hfid>712</hfid><slayer_hfid>-1</slayer_hfid><site_id>700</site_id>
+  <cause>old age</cause>
+</historical_event>
+<!-- Asmel killed by dragon Scald -->
+<historical_event>
+  <id>7003</id><year>90</year><seconds72>29000</seconds72>
+  <type>hf simple battle event</type>
+  <group_1_hfid>714</group_1_hfid><group_2_hfid>713</group_2_hfid>
+  <site_id>700</site_id><subregion_id>-1</subregion_id>
+</historical_event>
+<historical_event>
+  <id>7004</id><year>90</year><seconds72>30000</seconds72><type>hf died</type>
+  <hfid>713</hfid><slayer_hfid>714</slayer_hfid><site_id>700</site_id>
+  <cause>struck</cause><slayer_race>DRAGON</slayer_race><slayer_caste>FEMALE</slayer_caste>
+</historical_event>
+<!-- Bomrek drowned -->
+<historical_event>
+  <id>7005</id><year>85</year><seconds72>20000</seconds72><type>hf died</type>
+  <hfid>715</hfid><slayer_hfid>-1</slayer_hfid><site_id>700</site_id>
+  <cause>drowned</cause>
+</historical_event>
+<!-- Tirist died of thirst -->
+<historical_event>
+  <id>7006</id><year>92</year><seconds72>5000</seconds72><type>hf died</type>
+  <hfid>716</hfid><slayer_hfid>-1</slayer_hfid><site_id>700</site_id>
+  <cause>thirst</cause>
+</historical_event>
+</historical_events>
+<historical_event_collections></historical_event_collections>
+<historical_eras>
+<historical_era><name>The Age of Death</name><start_year>0</start_year></historical_era>
+</historical_eras>
+<written_contents></written_contents>
+<poetic_forms></poetic_forms>
+<musical_forms></musical_forms>
+<dance_forms></dance_forms>
+</df_world>

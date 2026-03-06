@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<df_world>
+<regions>
+<region><id>1</id><name>the welcoming hills</name><type>Hills</type></region>
+</regions>
+<underground_regions></underground_regions>
+<sites>
+<site>
+  <id>1000</id><type>fortress</type><name>newhome</name>
+  <coords>25,35</coords><rectangle>400,560:403,563</rectangle>
+  <structures></structures>
+  <site_properties></site_properties>
+</site>
+</sites>
+<world_constructions></world_constructions>
+<artifacts></artifacts>
+<historical_figures>
+<!-- === Wave 1 (year 100, seconds72=1000): 3 founding dwarves === -->
+<historical_figure>
+  <id>1010</id><name>zon clearchannel</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>60</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>MINER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>MINING</skill><total_ip>15000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1011</id><name>risen copperarm</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>62</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>CARPENTER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>CARPENTRY</skill><total_ip>12000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1012</id><name>olon rockhammer</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>58</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>MASON</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>MASONRY</skill><total_ip>13000</total_ip></hf_skill>
+</historical_figure>
+<!-- === Wave 2 (year 100, seconds72=50000): 2 autumn migrants === -->
+<historical_figure>
+  <id>1013</id><name>rigoth ironquill</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>55</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>RECORD_KEEPER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_link><link_type>child</link_type><hfid>1014</hfid></hf_link>
+  <hf_skill><skill>RECORD_KEEPING</skill><total_ip>9000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1014</id><name>ducim ironquill</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>82</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>STANDARD</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>1013</hfid></hf_link>
+  <hf_skill><skill>WRESTLING</skill><total_ip>300</total_ip></hf_skill>
+</historical_figure>
+<!-- === Wave 3 (year 101, seconds72=1000): 4 spring settlers === -->
+<historical_figure>
+  <id>1015</id><name>urvad strongpick</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>50</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>SMITH</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>FORGE_WEAPON</skill><total_ip>17000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1016</id><name>asob glowember</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>45</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>BREWER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>BREWING</skill><total_ip>14000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1017</id><name>lolor deepforge</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>48</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>PLANTER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>PLANT</skill><total_ip>11000</total_ip></hf_skill>
+</historical_figure>
+<historical_figure>
+  <id>1018</id><name>eral tincoat</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>52</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>JEWELER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>1000</entity_id></entity_link>
+  <hf_skill><skill>GEM_CUTTING</skill><total_ip>10000</total_ip></hf_skill>
+</historical_figure>
+</historical_figures>
+<entity_populations>
+<entity_population><id>1</id></entity_population>
+</entity_populations>
+<entities>
+<entity><id>1000</id><name>the picks of settling</name></entity>
+</entities>
+<historical_events>
+<!-- === Wave 1: year 100, seconds72=1000 === -->
+<historical_event>
+  <id>10000</id><year>100</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1010</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>10001</id><year>100</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1011</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>10002</id><year>100</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1012</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<!-- === Wave 2: year 100, seconds72=50000 (autumn migrants) === -->
+<historical_event>
+  <id>10003</id><year>100</year><seconds72>50000</seconds72><type>change hf state</type>
+  <hfid>1013</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>10004</id><year>100</year><seconds72>50000</seconds72><type>change hf state</type>
+  <hfid>1014</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<!-- === Wave 3: year 101, seconds72=1000 === -->
+<historical_event>
+  <id>10005</id><year>101</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1015</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>10006</id><year>101</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1016</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>10007</id><year>101</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1017</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+<historical_event>
+  <id>10008</id><year>101</year><seconds72>1000</seconds72><type>change hf state</type>
+  <hfid>1018</hfid><site_id>1000</site_id><state>settled</state><mood>-1</mood>
+</historical_event>
+</historical_events>
+<historical_event_collections></historical_event_collections>
+<historical_eras>
+<historical_era><name>The Age of Migration</name><start_year>0</start_year></historical_era>
+</historical_eras>
+<written_contents></written_contents>
+<poetic_forms></poetic_forms>
+<musical_forms></musical_forms>
+<dance_forms></dance_forms>
+</df_world>

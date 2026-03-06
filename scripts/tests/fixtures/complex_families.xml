@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<df_world>
+<regions>
+<region><id>1</id><name>the family vale</name><type>Forest</type></region>
+</regions>
+<underground_regions></underground_regions>
+<sites>
+<site>
+  <id>800</id><type>fortress</type><name>hearthhollow</name>
+  <coords>30,30</coords><rectangle>480,480:483,483</rectangle>
+  <structures></structures>
+  <site_properties></site_properties>
+</site>
+</sites>
+<world_constructions></world_constructions>
+<artifacts></artifacts>
+<historical_figures>
+<!-- === Generation 0: Grandparents === -->
+<!-- Grandfather — dead -->
+<historical_figure>
+  <id>810</id><name>dastot ironbeard</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>-20</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>75</death_year><death_seconds72>5000</death_seconds72>
+  <associated_type>MINER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>spouse</link_type><hfid>811</hfid><link_strength>100</link_strength></hf_link>
+  <hf_link><link_type>child</link_type><hfid>812</hfid></hf_link>
+  <hf_link><link_type>child</link_type><hfid>813</hfid></hf_link>
+  <hf_skill><skill>MINING</skill><total_ip>20000</total_ip></hf_skill>
+</historical_figure>
+<!-- Grandmother — alive -->
+<historical_figure>
+  <id>811</id><name>eral gemheart</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>-15</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>JEWELER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>spouse</link_type><hfid>810</hfid><link_strength>100</link_strength></hf_link>
+  <hf_link><link_type>child</link_type><hfid>812</hfid></hf_link>
+  <hf_link><link_type>child</link_type><hfid>813</hfid></hf_link>
+  <hf_skill><skill>GEM_CUTTING</skill><total_ip>18000</total_ip></hf_skill>
+</historical_figure>
+<!-- === Generation 1: Two children === -->
+<!-- Child 1 (son) — married to 814, alive -->
+<historical_figure>
+  <id>812</id><name>tosid ironbeard</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>15</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>MASON</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>810</hfid></hf_link>
+  <hf_link><link_type>mother</link_type><hfid>811</hfid></hf_link>
+  <hf_link><link_type>spouse</link_type><hfid>814</hfid><link_strength>100</link_strength></hf_link>
+  <hf_link><link_type>child</link_type><hfid>816</hfid></hf_link>
+  <hf_link><link_type>child</link_type><hfid>817</hfid></hf_link>
+  <hf_skill><skill>MASONRY</skill><total_ip>14000</total_ip></hf_skill>
+</historical_figure>
+<!-- Child 2 (daughter) — divorced/widowed from 815, alive -->
+<historical_figure>
+  <id>813</id><name>udil ironbeard</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>18</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>BREWER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>810</hfid></hf_link>
+  <hf_link><link_type>mother</link_type><hfid>811</hfid></hf_link>
+  <hf_link><link_type>former_spouse</link_type><hfid>815</hfid></hf_link>
+  <hf_link><link_type>child</link_type><hfid>818</hfid></hf_link>
+  <hf_skill><skill>BREWING</skill><total_ip>16000</total_ip></hf_skill>
+</historical_figure>
+<!-- Spouse of child 1 (daughter-in-law) -->
+<historical_figure>
+  <id>814</id><name>aban copperkettle</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>16</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>COOK</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>spouse</link_type><hfid>812</hfid><link_strength>100</link_strength></hf_link>
+  <hf_link><link_type>child</link_type><hfid>816</hfid></hf_link>
+  <hf_link><link_type>child</link_type><hfid>817</hfid></hf_link>
+  <hf_skill><skill>COOK</skill><total_ip>12000</total_ip></hf_skill>
+</historical_figure>
+<!-- Ex-spouse of child 2 (divorced) -->
+<historical_figure>
+  <id>815</id><name>rovod wanderstone</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>17</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>WOODCUTTER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>former_spouse</link_type><hfid>813</hfid></hf_link>
+  <hf_link><link_type>child</link_type><hfid>818</hfid></hf_link>
+  <hf_skill><skill>AXE</skill><total_ip>9000</total_ip></hf_skill>
+</historical_figure>
+<!-- === Generation 2: Grandchildren === -->
+<!-- Grandchild 1 — child of 812+814 -->
+<historical_figure>
+  <id>816</id><name>led ironbeard</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>45</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>SMITH</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>812</hfid></hf_link>
+  <hf_link><link_type>mother</link_type><hfid>814</hfid></hf_link>
+  <hf_link><link_type>spouse</link_type><hfid>820</hfid><link_strength>100</link_strength></hf_link>
+  <hf_link><link_type>child</link_type><hfid>821</hfid></hf_link>
+  <hf_skill><skill>FORGE_WEAPON</skill><total_ip>11000</total_ip></hf_skill>
+</historical_figure>
+<!-- Grandchild 2 — child of 812+814 -->
+<historical_figure>
+  <id>817</id><name>ast ironbeard</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>48</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>PLANTER</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>812</hfid></hf_link>
+  <hf_link><link_type>mother</link_type><hfid>814</hfid></hf_link>
+  <hf_skill><skill>PLANT</skill><total_ip>7000</total_ip></hf_skill>
+</historical_figure>
+<!-- Grandchild 3 — child of 813+815 (divorced parents) -->
+<historical_figure>
+  <id>818</id><name>mafol wanderstone</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>42</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>BOWMAN</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>815</hfid></hf_link>
+  <hf_link><link_type>mother</link_type><hfid>813</hfid></hf_link>
+  <hf_skill><skill>CROSSBOW</skill><total_ip>6000</total_ip></hf_skill>
+</historical_figure>
+<!-- Spouse of grandchild 1 (for great-grandchild link) -->
+<historical_figure>
+  <id>820</id><name>tholtig steelhammer</name><race>DWARF</race><caste>FEMALE</caste>
+  <appeared>1</appeared>
+  <birth_year>47</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>HAMMERMAN</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>spouse</link_type><hfid>816</hfid><link_strength>100</link_strength></hf_link>
+  <hf_link><link_type>child</link_type><hfid>821</hfid></hf_link>
+  <hf_skill><skill>HAMMER</skill><total_ip>10000</total_ip></hf_skill>
+</historical_figure>
+<!-- === Generation 3: Great-grandchild === -->
+<historical_figure>
+  <id>821</id><name>cilob ironbeard</name><race>DWARF</race><caste>MALE</caste>
+  <appeared>1</appeared>
+  <birth_year>75</birth_year><birth_seconds72>-1</birth_seconds72>
+  <death_year>-1</death_year><death_seconds72>-1</death_seconds72>
+  <associated_type>STANDARD</associated_type>
+  <entity_link><link_type>member</link_type><entity_id>800</entity_id></entity_link>
+  <hf_link><link_type>father</link_type><hfid>816</hfid></hf_link>
+  <hf_link><link_type>mother</link_type><hfid>820</hfid></hf_link>
+  <hf_skill><skill>WRESTLING</skill><total_ip>500</total_ip></hf_skill>
+</historical_figure>
+</historical_figures>
+<entity_populations>
+<entity_population><id>1</id></entity_population>
+</entity_populations>
+<entities>
+<entity><id>800</id><name>the family halls</name></entity>
+</entities>
+<historical_events>
+<!-- Grandparents marry -->
+<historical_event>
+  <id>8000</id><year>5</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>810</hfid><hfid_target>811</hfid_target><link_type>spouse</link_type>
+</historical_event>
+<!-- Birth of tosid (gen 1 child 1) -->
+<historical_event>
+  <id>8001</id><year>15</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>810</hfid><hfid_target>812</hfid_target><link_type>child</link_type>
+</historical_event>
+<!-- Birth of udil (gen 1 child 2) -->
+<historical_event>
+  <id>8002</id><year>18</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>810</hfid><hfid_target>813</hfid_target><link_type>child</link_type>
+</historical_event>
+<!-- Tosid marries Aban -->
+<historical_event>
+  <id>8003</id><year>40</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>812</hfid><hfid_target>814</hfid_target><link_type>spouse</link_type>
+</historical_event>
+<!-- Udil marries Rovod -->
+<historical_event>
+  <id>8004</id><year>38</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>813</hfid><hfid_target>815</hfid_target><link_type>spouse</link_type>
+</historical_event>
+<!-- Mafol born (gen 2, child of 813+815) -->
+<historical_event>
+  <id>8005</id><year>42</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>813</hfid><hfid_target>818</hfid_target><link_type>child</link_type>
+</historical_event>
+<!-- Led born (gen 2, child of 812+814) -->
+<historical_event>
+  <id>8006</id><year>45</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>812</hfid><hfid_target>816</hfid_target><link_type>child</link_type>
+</historical_event>
+<!-- Ast born (gen 2, child of 812+814) -->
+<historical_event>
+  <id>8007</id><year>48</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>812</hfid><hfid_target>817</hfid_target><link_type>child</link_type>
+</historical_event>
+<!-- Udil and Rovod divorce -->
+<historical_event>
+  <id>8008</id><year>55</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>813</hfid><hfid_target>815</hfid_target><link_type>former_spouse</link_type>
+</historical_event>
+<!-- Led marries Tholtig -->
+<historical_event>
+  <id>8009</id><year>70</year><seconds72>1000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>816</hfid><hfid_target>820</hfid_target><link_type>spouse</link_type>
+</historical_event>
+<!-- Grandfather Dastot dies -->
+<historical_event>
+  <id>8010</id><year>75</year><seconds72>5000</seconds72><type>hf died</type>
+  <hfid>810</hfid><slayer_hfid>-1</slayer_hfid><site_id>800</site_id>
+  <cause>old age</cause>
+</historical_event>
+<!-- Cilob born (gen 3, great-grandchild) -->
+<historical_event>
+  <id>8011</id><year>75</year><seconds72>8000</seconds72>
+  <type>add hf hf link</type>
+  <hfid>816</hfid><hfid_target>821</hfid_target><link_type>child</link_type>
+</historical_event>
+</historical_events>
+<historical_event_collections></historical_event_collections>
+<historical_eras>
+<historical_era><name>The Age of Families</name><start_year>0</start_year></historical_era>
+</historical_eras>
+<written_contents></written_contents>
+<poetic_forms></poetic_forms>
+<musical_forms></musical_forms>
+<dance_forms></dance_forms>
+</df_world>

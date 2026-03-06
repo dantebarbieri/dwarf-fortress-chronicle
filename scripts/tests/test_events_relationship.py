@@ -155,6 +155,81 @@ class TestEventsFilters:
         # The goblin death event should name the victim and slayer
         assert "snagak" in out or "goretooth" in out
 
+    # -- Ported from filter_year.py (consolidated into events.py) ----------
+
+    def test_year_single(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Year 101 returns matching events (ported from filter_year)."""
+        r = run_script(df_root, "events.py", "--year", "101", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "year 101" in out
+        # Should contain year 101 events (merchant, battle, hf died, add hf hf link)
+        assert "event" in out
+
+    def test_year_range(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Year range 100–101 includes events from both years (ported from filter_year)."""
+        r = run_script(df_root, "events.py", "--year-from", "100", "--year-to", "101", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        # Events from both year 100 (artifact created, masterpiece) and year 101 (hf died, merchant)
+        assert "artifact" in out or "masterpiece" in out
+        assert "hf died" in out or "merchant" in out
+
+    def test_year_with_site(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Year + site filter combo (ported from filter_year)."""
+        r = run_script(df_root, "events.py", "--year", "101", "--site", "testfort", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "testfort" in out
+
+    def test_year_with_type(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Year + type filter returns exactly 1 hf died event (ported from filter_year)."""
+        r = run_script(df_root, "events.py", "--year", "101", "--type", "hf died", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "hf died" in out
+        # Should only have 1 event (the goblin death)
+        assert "1 of 1" in out
+
+    def test_year_summary(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Year + summary mode shows type table (ported from filter_year)."""
+        r = run_script(df_root, "events.py", "--year", "101", "--summary", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        # Summary table should show event types and counts
+        assert "event type" in out
+        assert "total" in out
+
+    def test_year_json(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Year 102 JSON output returns expected events (ported from filter_year)."""
+        r = run_script(df_root, "events.py", "--year", "102", "--json", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        data = json.loads(r.stdout)
+        assert isinstance(data, list)
+        # Year 102 has 2 events: masterpiece item + change hf state
+        assert len(data) == 2
+
+    def test_year_no_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """No filter → error exit (ported from filter_year)."""
+        r = run_script(df_root, "events.py", xml_path=str(sample_xml_path))
+        assert r.returncode != 0
+        combined = (r.stdout + r.stderr).lower()
+        assert "required" in combined or "filter" in combined
+
+    def test_year_limit(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Limit flag caps output (ported from filter_year)."""
+        r = run_script(
+            df_root, "events.py",
+            "--year-from", "99", "--year-to", "102", "--limit", "3",
+            xml_path=str(sample_xml_path),
+        )
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        # Should show only 3 events with a "showing 3 of N" note
+        assert "3 of" in out
+
+    # -- End ported filter_year tests ---------------------------------------
+
     def test_events_raw(self, df_root: Path, sample_xml_path: Path) -> None:
         r = run_script(df_root, "events.py",
                        "--year", "102", "--type", "masterpiece item", "--raw",

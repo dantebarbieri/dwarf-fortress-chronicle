@@ -1,4 +1,4 @@
-"""Tests for civilization, site, creature, and filter_year scripts.
+"""Tests for civilization, site, and creature scripts.
 
 Each script is invoked as a subprocess from the DF root directory to test
 actual CLI behaviour (exit codes, stdout, stderr, JSON output).
@@ -28,8 +28,6 @@ from scripts.tests.conftest import (
     GOBLIN_CIV_ID,
     TESTFORT_ID,
     EVILSPIRE_ID,
-    GLEAMCUTTER_ID,
-    DARKBANE_ID,
 )
 
 
@@ -228,75 +226,4 @@ class TestFilterCreature:
         assert "enemy" in out
 
 
-# ===================================================================
-# filter_year.py
-# ===================================================================
 
-
-class TestFilterYear:
-    """Tests for filter_year.py."""
-
-    SCRIPT = "filter_year.py"
-
-    def test_year_single(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, "--year", "101", xml_path=str(sample_xml_path))
-        assert r.returncode == 0, r.stderr
-        out = r.stdout.lower()
-        assert "year 101" in out
-        # Should contain year 101 events (merchant, battle, hf died, add hf hf link)
-        assert "event" in out
-
-    def test_year_range(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, "--year-from", "100", "--year-to", "101", xml_path=str(sample_xml_path))
-        assert r.returncode == 0, r.stderr
-        out = r.stdout
-        # Events from both year 100 (artifact created, masterpiece) and year 101 (hf died, merchant)
-        assert "artifact created" in out.lower() or "masterpiece" in out.lower()
-        assert "hf died" in out.lower() or "merchant" in out.lower()
-
-    def test_year_with_site(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, "--year", "101", "--site", "testfort", xml_path=str(sample_xml_path))
-        assert r.returncode == 0, r.stderr
-        out = r.stdout.lower()
-        assert "site = testfort" in out or "testfort" in out
-
-    def test_year_with_type(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, "--year", "101", "--type", "hf died", xml_path=str(sample_xml_path))
-        assert r.returncode == 0, r.stderr
-        out = r.stdout.lower()
-        assert "hf died" in out
-        # Should only have 1 event (the goblin death)
-        assert "found 1 event" in out
-
-    def test_year_summary(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, "--year", "101", "--summary", xml_path=str(sample_xml_path))
-        assert r.returncode == 0, r.stderr
-        out = r.stdout.lower()
-        # Summary table should show event types and counts
-        assert "event type" in out
-        assert "total" in out
-
-    def test_year_json(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, "--year", "102", "--json", xml_path=str(sample_xml_path))
-        assert r.returncode == 0, r.stderr
-        data = json.loads(r.stdout)
-        assert isinstance(data, list)
-        # Year 102 has 2 events: masterpiece item + change hf state
-        assert len(data) == 2
-
-    def test_year_no_filter(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(df_root, self.SCRIPT, xml_path=str(sample_xml_path))
-        assert r.returncode != 0
-        combined = (r.stdout + r.stderr).lower()
-        assert "required" in combined or "error" in combined
-
-    def test_year_limit(self, df_root: Path, sample_xml_path: Path) -> None:
-        r = run_script(
-            df_root, self.SCRIPT,
-            "--year-from", "99", "--year-to", "102", "--limit", "3",
-            xml_path=str(sample_xml_path),
-        )
-        assert r.returncode == 0, r.stderr
-        out = r.stdout.lower()
-        # Should show only 3 events with a "showing 3 of N" note
-        assert "showing 3 of" in out or "limit" in out
