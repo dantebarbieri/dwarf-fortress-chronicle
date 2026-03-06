@@ -129,6 +129,48 @@ class TestRelationships:
         assert r.returncode != 0
         assert "2" in r.stderr or "at least" in r.stderr.lower()
 
+    def test_rel_include_indirect_flag(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--include-indirect runs cleanly and produces output."""
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm", "--include-indirect",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        assert r.stdout.strip()
+
+    def test_rel_include_indirect_json(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--include-indirect --json produces valid JSON with expected keys."""
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm",
+                       "--include-indirect", "--json",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        data = json.loads(r.stdout)
+        assert "subjects" in data
+        assert "shared_events" in data
+
+    def test_rel_year_to_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--year-to 100 excludes year-101+ shared events."""
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm",
+                       "--year-to", "100", "--json",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        data = json.loads(r.stdout)
+        # The only shared event (spouse link, year 101) must be filtered out
+        for ev in data["shared_events"]["events"]:
+            assert int(ev["year"]) <= 100
+
+    def test_rel_year_single_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--year 100 restricts shared events to exactly year 100."""
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm",
+                       "--year", "100", "--json",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        data = json.loads(r.stdout)
+        for ev in data["shared_events"]["events"]:
+            assert int(ev["year"]) == 100
+
     def test_rel_not_found(self, df_root: Path, sample_xml_path: Path) -> None:
         """Nonexistent names → error."""
         r = run_script(df_root, "relationship_history.py",

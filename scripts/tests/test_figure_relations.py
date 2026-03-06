@@ -100,6 +100,21 @@ class TestDwarfRelations:
         assert "urist mctest" in out
         assert "dorin shieldarm" in out
 
+    def test_all_flag_runs_without_error(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "urist mctest", "--all", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+
+    def test_all_flag_json(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "urist mctest", "--all", "--json", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        data = json.loads(r.stdout)
+        assert "social_links" in data
+        assert "family" in data
+
+    def test_year_flags_accepted(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "urist mctest", "--year", "100", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+
 
 # ===================================================================
 # Complex family tree (complex_families.xml)

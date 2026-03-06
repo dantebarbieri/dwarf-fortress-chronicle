@@ -183,3 +183,29 @@ class TestMegabeastsDeadFigures:
         r = run_megabeasts(df_root, "--dead-only", xml_path=str(dead_figures_xml_path))
         assert r.returncode == 0, r.stderr
         assert "scald cinderjaw" not in r.stdout.lower()
+
+
+# ===================================================================
+# Smoke tests: inherited common flags that are no-ops
+# ===================================================================
+
+
+class TestMegabeastsCommonFlagsNoop:
+    """Verify inherited --year/--year-from/--year-to flags don't crash."""
+
+    def test_year_flag_accepted(
+        self, df_root: Path, base_world_xml_path: Path
+    ) -> None:
+        """--year is accepted without crashing (flag is a no-op)."""
+        r = run_megabeasts(df_root, "--year", "100", xml_path=str(base_world_xml_path))
+        assert r.returncode == 0, r.stderr
+
+    def test_year_range_flags_accepted(
+        self, df_root: Path, base_world_xml_path: Path
+    ) -> None:
+        """--year-from/--year-to are accepted without crashing (flags are no-ops)."""
+        r = run_megabeasts(
+            df_root, "--year-from", "50", "--year-to", "100",
+            xml_path=str(base_world_xml_path),
+        )
+        assert r.returncode == 0, r.stderr

@@ -194,3 +194,82 @@ class TestFigureRaceFilter:
         assert r.returncode != 0
         combined = (r.stdout + r.stderr).lower()
         assert "no " in combined or "error" in combined
+
+
+# ===================================================================
+# figure.py with --year / --year-from / --year-to filters
+# ===================================================================
+
+
+class TestFigureYearFilter:
+    """figure.py year-range flags should filter the Event Summary section."""
+
+    SCRIPT = "figure.py"
+
+    def _get_event_summary(
+        self, df_root: Path, xml_path: Path, *extra_args: str,
+    ) -> list[dict]:
+        """Run figure.py with --json and return the event_summary list."""
+        r = run_script(
+            df_root, self.SCRIPT, "urist mctest", "--json", *extra_args,
+            xml_path=str(xml_path),
+        )
+        assert r.returncode == 0, r.stderr
+        data = json.loads(r.stdout)
+        return data["event_summary"]
+
+    @staticmethod
+    def _summary_types(summary: list[dict]) -> set[str]:
+        return {entry["event_type"] for entry in summary}
+
+    @staticmethod
+    def _summary_total(summary: list[dict]) -> int:
+        return sum(entry["count"] for entry in summary)
+
+    def test_year_filter_single(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--year 101 should include only year-101 events for Urist."""
+        summary = self._get_event_summary(df_root, sample_xml_path, "--year", "101")
+        types = self._summary_types(summary)
+        # Urist has one year-101 event: add hf hf link
+        assert "add hf hf link" in types
+        # Year-99/100 event types must be absent
+        assert "change hf state" not in types
+        assert "masterpiece item" not in types
+        assert "artifact created" not in types
+        assert self._summary_total(summary) == 1
+
+    def test_year_from_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--year-from 101 should exclude events before year 101."""
+        summary = self._get_event_summary(df_root, sample_xml_path, "--year-from", "101")
+        types = self._summary_types(summary)
+        assert "add hf hf link" in types
+        # Year-99 and year-100 types must be absent
+        assert "change hf state" not in types
+        assert "artifact created" not in types
+        assert "masterpiece item" not in types
+
+    def test_year_to_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--year-to 100 should exclude events after year 100."""
+        summary = self._get_event_summary(df_root, sample_xml_path, "--year-to", "100")
+        types = self._summary_types(summary)
+        # Year 99+100 events should be present
+        assert "change hf state" in types
+        assert "masterpiece item" in types
+        assert "artifact created" in types
+        # Year-101 event must be absent
+        assert "add hf hf link" not in types
+
+    def test_year_range_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """--year-from 100 --year-to 101 should include only years 100–101."""
+        summary = self._get_event_summary(
+            df_root, sample_xml_path, "--year-from", "100", "--year-to", "101",
+        )
+        types = self._summary_types(summary)
+        # Year-100 events
+        assert "masterpiece item" in types
+        assert "artifact created" in types
+        # Year-101 event
+        assert "add hf hf link" in types
+        # Year-99 types must be absent
+        assert "change hf state" not in types
+        assert "add hf entity link" not in types

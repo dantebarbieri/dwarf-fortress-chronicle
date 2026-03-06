@@ -109,6 +109,40 @@ class TestFilterCivilization:
         # Year-101 specific events (like hf died) should NOT appear
         assert "hf died" not in out
 
+    def test_sites_flag(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "guilds of testing", "--sites", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        out = r.stdout.lower()
+        assert "testfort" in out
+
+    def test_sites_json(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, self.SCRIPT, "guilds of testing", "--sites", "--json", xml_path=str(sample_xml_path))
+        assert r.returncode == 0, r.stderr
+        data = json.loads(r.stdout)
+        assert "sites" in data
+        site_names = [s.get("name", "") for s in data["sites"]]
+        assert any("testfort" in n for n in site_names)
+
+    def test_year_from_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        # With year-from 99, the "created site" event (year 99) should appear
+        r1 = run_script(df_root, self.SCRIPT, "guilds of testing", "--year-from", "99", xml_path=str(sample_xml_path))
+        assert r1.returncode == 0, r1.stderr
+        assert "created site" in r1.stdout.lower()
+        # With year-from 100, the year-99 event should be excluded
+        r2 = run_script(df_root, self.SCRIPT, "guilds of testing", "--year-from", "100", xml_path=str(sample_xml_path))
+        assert r2.returncode == 0, r2.stderr
+        assert "created site" not in r2.stdout.lower()
+
+    def test_year_to_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        # With year-to 99, the "created site" event (year 99) should appear
+        r1 = run_script(df_root, self.SCRIPT, "guilds of testing", "--year-to", "99", xml_path=str(sample_xml_path))
+        assert r1.returncode == 0, r1.stderr
+        assert "created site" in r1.stdout.lower()
+        # With year-to 98, the year-99 event should be excluded
+        r2 = run_script(df_root, self.SCRIPT, "guilds of testing", "--year-to", "98", xml_path=str(sample_xml_path))
+        assert r2.returncode == 0, r2.stderr
+        assert "created site" not in r2.stdout.lower()
+
 
 # ===================================================================
 # Empty world edge cases
