@@ -20,7 +20,7 @@ The chronicle lives in `chronicle/` and is split into separate files:
 
 | File | Contents |
 |------|----------|
-| `luregold-intro.md` | Preamble: who the bookkeeper is, who the Guilds of Clinching are, the founding seven, essential deep history (Notchedgalley, Bookbalded, Cavechew, pre-founding wars). Ends at the moment the seven set out. |
+| `luregold-000-intro.md` | Preamble: who the bookkeeper is, who the Guilds of Clinching are, the founding seven, essential deep history (Notchedgalley, Bookbalded, Cavechew, pre-founding wars). Ends at the moment the seven set out. |
 | `luregold-100.md` | Year 100 annual review. |
 | `luregold-101.md` | Year 101 annual review. |
 | `luregold-102.md` | Year 102 annual review (current). |
@@ -32,7 +32,7 @@ The chronicle lives in `chronicle/` and is split into separate files:
 - **Natural in-world framing** — each year file is an annual ledger review, the kind of document a bookkeeper would actually produce.
 
 ### How the files relate
-- `luregold-intro.md` is the foundation. It provides the context needed to understand any year file.
+- `luregold-000-intro.md` is the foundation. It provides the context needed to understand any year file.
 - Each year file is **self-contained enough to read on its own** but assumes the reader has access to the intro and prior years. Light cross-references are fine: "as I noted in last year's review," "I will have more to say when the spring caravan arrives."
 - The **most recent year file** is always the active one. It ends mid-stream — no epilogue, no closing, no capstone. Just the latest entry.
 
