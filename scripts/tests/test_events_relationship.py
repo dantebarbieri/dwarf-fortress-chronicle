@@ -1,0 +1,282 @@
+"""Tests for events.py and relationship_history.py CLI scripts.
+
+Uses the shared sample XML fixture from conftest.py and exercises both
+scripts via subprocess to validate CLI behaviour end-to-end.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+
+# ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+
+def run_script(
+    df_root: Path,
+    script_name: str,
+    *args: str,
+    xml_path: str,
+) -> subprocess.CompletedProcess:
+    """Run a script in the DF root with ``--xml`` pointed at the fixture."""
+    cmd = [sys.executable, f"scripts/{script_name}", "--xml", xml_path, *args]
+    return subprocess.run(
+        cmd, capture_output=True, text=True, cwd=str(df_root),
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+    )
+
+
+# ===================================================================
+# events.py
+# ===================================================================
+
+
+class TestEventsTypes:
+    """``--types`` flag lists available event types."""
+
+    def test_events_types_flag(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--types", xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        for t in (
+            "hf died",
+            "masterpiece item",
+            "created site",
+            "artifact created",
+            "change hf state",
+            "merchant",
+            "hf simple battle event",
+            "add hf hf link",
+            "add hf entity link",
+            "artifact stored",
+        ):
+            assert t in out, f"Expected type '{t}' in --types output"
+
+
+class TestEventsFilters:
+    """Filtering events by various criteria."""
+
+    def test_events_by_year(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "101",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Year 101 has 4 events: merchant, battle, hf died, add hf hf link
+        assert "4 of 4" in out or "showing 4" in out
+        assert "hf died" in out
+        assert "merchant" in out
+
+    def test_events_by_type(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--type", "hf died",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "hf died" in out
+        # Only 1 hf died event in the fixture
+        assert "1 of 1" in out
+
+    def test_events_by_site(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year-from", "99", "--year-to", "102",
+                       "--site", "200", xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # 13 of 15 events have site_id=200 (events 1003, 1012 lack site_id)
+        assert "13 of 13" in out or "showing" in out
+        assert "testfort" in out
+
+    def test_events_by_figure(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year-from", "99", "--year-to", "102",
+                       "--figure", "urist mctest", xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "urist" in out
+        # Urist (300) appears in hfid/maker_hfid of events: 1001,1003,1004,1007,1008,1012
+        assert "6 of 6" in out
+
+    def test_events_by_entity(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year-from", "99", "--year-to", "102",
+                       "--entity", "guilds of testing",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Entity 100 appears in civ_id of event 1000 (created site)
+        assert "created site" in out
+
+    def test_events_summary(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year-from", "99", "--year-to", "102",
+                       "--summary", xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "total:" in out
+        assert "15 events" in out
+        assert "change hf state" in out
+        assert "masterpiece item" in out
+
+    def test_events_limit(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year-from", "99", "--year-to", "102",
+                       "--limit", "3", xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout
+        assert "3 of 15" in out or "Showing 3" in out
+
+    def test_events_json(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py", "--year", "100", "--json",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        data = json.loads(r.stdout)
+        assert isinstance(data, list)
+        # Year 100 has 5 events: 1004-1008
+        assert len(data) == 5
+        types = {e["type"] for e in data}
+        assert "artifact created" in types
+        assert "masterpiece item" in types
+
+    def test_events_no_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        """No filter arguments → error exit."""
+        r = run_script(df_root, "events.py", xml_path=str(sample_xml_path))
+        assert r.returncode != 0
+        assert "filter" in r.stderr.lower() or "required" in r.stderr.lower()
+
+    def test_events_combined_filters(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py",
+                       "--year", "101", "--type", "hf died", "--site", "200",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "hf died" in out
+        assert "1 of 1" in out
+        # The goblin death event should name the victim and slayer
+        assert "snagak" in out or "goretooth" in out
+
+    def test_events_raw(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "events.py",
+                       "--year", "102", "--type", "masterpiece item", "--raw",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Raw mode shows key: value pairs from the event dict
+        assert "maker_hfid" in out
+        assert "entity_id" in out
+        assert "skill_at_time" in out
+
+    def test_events_describe(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Human-readable description should name slayer and victim."""
+        r = run_script(df_root, "events.py", "--year", "101", "--type", "hf died",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Victim: snagak goretooth (302), Slayer: dorin shieldarm (301)
+        assert "snagak" in out or "goretooth" in out
+        assert "dorin" in out or "shieldarm" in out
+
+
+# ===================================================================
+# relationship_history.py
+# ===================================================================
+
+
+class TestRelationships:
+    """Tests for relationship_history.py."""
+
+    def test_rel_two_spouses(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Direct relationship: spouse
+        assert "spouse" in out
+        # Shared entities: both belong to guilds of testing and work of tests
+        assert "guilds of testing" in out or "work of tests" in out
+        # Family network section: direct spouse link found
+        assert "family" in out
+
+    def test_rel_parent_child(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "kiddo mctest",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Should show parent-child link (child from Urist, father from Kiddo)
+        assert "child" in out or "father" in out
+
+    def test_rel_no_direct_link(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "snagak goretooth",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # No direct hf_link between Urist and Snagak — but analysis still runs
+        assert "urist" in out
+        assert "snagak" in out
+        # Both reference entity 100 (member vs enemy), so shared entities section present
+        assert "guilds of testing" in out
+
+    def test_rel_json(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm", "--json",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        data = json.loads(r.stdout)
+        assert "subjects" in data
+        assert "direct_relationships" in data
+        assert "shared_entities" in data
+        assert "shared_events" in data
+        assert "family_path" in data
+        assert "timeline" in data
+        # Two subjects resolved
+        assert len(data["subjects"]) == 2
+        # Spouse link in direct_relationships
+        link_types = {rel["link_type"] for rel in data["direct_relationships"]}
+        assert "spouse" in link_types
+
+    def test_rel_with_events(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm", "--events",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # --events flag accepted; direct relationships still shown
+        assert "spouse" in out
+
+    def test_rel_year_filter(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm", "--year-from", "101",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        # Direct relationships are not year-filtered
+        assert "spouse" in out
+
+    def test_rel_three_figures(self, df_root: Path, sample_xml_path: Path) -> None:
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest", "dorin shieldarm", "kiddo mctest",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode == 0
+        out = r.stdout.lower()
+        assert "urist" in out
+        assert "dorin" in out
+        assert "kiddo" in out
+
+    def test_rel_not_enough_figures(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Only 1 name → error."""
+        r = run_script(df_root, "relationship_history.py",
+                       "urist mctest",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode != 0
+        assert "2" in r.stderr or "at least" in r.stderr.lower()
+
+    def test_rel_not_found(self, df_root: Path, sample_xml_path: Path) -> None:
+        """Nonexistent names → error."""
+        r = run_script(df_root, "relationship_history.py",
+                       "nonexistent1", "nonexistent2",
+                       xml_path=str(sample_xml_path))
+        assert r.returncode != 0
+        assert "no historical figure" in r.stderr.lower() or "error" in r.stderr.lower()

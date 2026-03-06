@@ -469,10 +469,11 @@ class LegendsParser:
         for key, lst in multi_scalar_accumulators.items():
             hf[key] = lst if len(lst) > 1 else lst[0]
 
-        # Normalise boolean-ish fields
+        # Normalise boolean-ish fields.  In DF XML a self-closing tag like
+        # <deity/> signals "present / true" even though its text is empty.
         for bfield in ("deity", "force"):
             if bfield in hf:
-                hf[bfield] = hf[bfield] not in ("", "0", "false")
+                hf[bfield] = hf[bfield] not in ("0", "false")
             else:
                 hf[bfield] = False
 

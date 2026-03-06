@@ -2,11 +2,11 @@
 """Show detailed skill information for a historical figure from the Legends XML.
 
 Usage:
-    python scripts/dwarf_skills.py "atir"
-    python scripts/dwarf_skills.py "atir" --sort name
-    python scripts/dwarf_skills.py "atir" --min-level Skilled
-    python scripts/dwarf_skills.py "atir" --compare "solon"
-    python scripts/dwarf_skills.py "atir" --json
+    python scripts/figure_skills.py "atir"
+    python scripts/figure_skills.py "atir" --sort name
+    python scripts/figure_skills.py "atir" --min-level Skilled
+    python scripts/figure_skills.py "atir" --compare "solon"
+    python scripts/figure_skills.py "atir" --json
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 # ---------------------------------------------------------------------------
-# Path setup so ``python scripts/dwarf_skills.py`` works from the DF root.
+# Path setup so ``python scripts/figure_skills.py`` works from the DF root.
 # ---------------------------------------------------------------------------
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 

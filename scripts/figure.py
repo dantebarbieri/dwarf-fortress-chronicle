@@ -1,14 +1,14 @@
 """
-dwarf.py — Comprehensive historical-figure profile from DF Legends XML.
+figure.py — Comprehensive historical-figure profile from DF Legends XML.
 
-Designed for dwarves but works for any historical figure. Displays identity,
-status, entity memberships, positions held, skills, family, artifacts, goals,
-and a brief event summary.
+Works for any historical figure (dwarves, goblins, megabeasts, etc.). Displays
+identity, status, entity memberships, positions held, skills, family, artifacts,
+goals, and a brief event summary.
 
 Usage:
-    python scripts/dwarf.py "atir"
-    python scripts/dwarf.py 12345 --json
-    python scripts/dwarf.py "urist" --race DWARF
+    python scripts/figure.py "atir"
+    python scripts/figure.py 12345 --json
+    python scripts/figure.py "urist" --race DWARF
 """
 
 from __future__ import annotations

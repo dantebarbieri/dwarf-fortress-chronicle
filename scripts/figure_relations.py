@@ -1,13 +1,13 @@
 """
-dwarf_relations.py — Show relationship details for a historical figure from Legends XML.
+figure_relations.py — Show relationship details for a historical figure from Legends XML.
 
 Displays family, deity links, social connections, entity memberships,
-and relationship events for a given dwarf (or other historical figure).
+and relationship events for a given historical figure.
 
 Usage:
-    python scripts/dwarf_relations.py "atir"
-    python scripts/dwarf_relations.py 12345 --tree
-    python scripts/dwarf_relations.py "sibrek" --all --json
+    python scripts/figure_relations.py "atir"
+    python scripts/figure_relations.py 12345 --tree
+    python scripts/figure_relations.py "sibrek" --all --json
 """
 
 from __future__ import annotations
@@ -426,7 +426,7 @@ def print_human(
 
 
 def build_argparser() -> argparse.ArgumentParser:
-    """Build the argument parser for dwarf_relations."""
+    """Build the argument parser for figure_relations."""
     parser = argparse.ArgumentParser(
         description="Show relationship details for a historical figure from Legends XML.",
     )
@@ -453,7 +453,7 @@ def build_argparser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
-    """Entry point for dwarf_relations CLI."""
+    """Entry point for figure_relations CLI."""
     configure_output()
     ap = build_argparser()
     args = ap.parse_args()

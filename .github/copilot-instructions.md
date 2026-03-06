@@ -172,12 +172,12 @@ Shared library imported by all other scripts. Not run directly. Provides:
 - Name resolution, event filtering, skill level conversion
 - Context manager support (`with LegendsParser(path) as lp:`)
 
-#### `scripts/filter_civilization.py` — Civilization Overview
+#### `scripts/civilization.py` — Civilization Overview
 
 ```
-python scripts/filter_civilization.py "guilds of clinching"
-python scripts/filter_civilization.py 258 --members --wars --sites
-python scripts/filter_civilization.py "guilds of clinching" --year-from 100 --json
+python scripts/civilization.py "guilds of clinching"
+python scripts/civilization.py 258 --members --wars --sites
+python scripts/civilization.py "guilds of clinching" --year-from 100 --json
 ```
 
 | Parameter | Description |
@@ -189,12 +189,12 @@ python scripts/filter_civilization.py "guilds of clinching" --year-from 100 --js
 
 Shows: overview, population (alive/dead, by race), sites, notable members, wars, recent events.
 
-#### `scripts/filter_fortress.py` — Site/Fortress Overview
+#### `scripts/site.py` — Site/Fortress Overview
 
 ```
-python scripts/filter_fortress.py luregold
-python scripts/filter_fortress.py luregold --structures --residents --events
-python scripts/filter_fortress.py 794 --year 102
+python scripts/site.py luregold
+python scripts/site.py luregold --structures --residents --events
+python scripts/site.py 794 --year 102
 ```
 
 | Parameter | Description |
@@ -206,12 +206,12 @@ python scripts/filter_fortress.py 794 --year 102
 
 Shows: site overview, structures, owning entities, artifacts, event summary, resident figures.
 
-#### `scripts/filter_creature.py` — Creature/Historical Figure Lookup
+#### `scripts/creature.py` — Creature/Historical Figure Lookup
 
 ```
-python scripts/filter_creature.py "atir roughlearning"
-python scripts/filter_creature.py "ebbak" --events --kills
-python scripts/filter_creature.py "atir" --list
+python scripts/creature.py "atir roughlearning"
+python scripts/creature.py "ebbak" --events --kills
+python scripts/creature.py "atir" --list
 ```
 
 | Parameter | Description |
@@ -242,11 +242,11 @@ python scripts/filter_year.py --year 101 --type "hf died" --summary
 
 At least one year filter (`--year`, `--year-from`, or `--year-to`) is required.
 
-#### `scripts/dwarf.py` — Dwarf/Figure Profile
+#### `scripts/figure.py` — Historical Figure Profile
 
 ```
-python scripts/dwarf.py "atir roughlearning"
-python scripts/dwarf.py 14589 --race DWARF
+python scripts/figure.py "atir roughlearning"
+python scripts/figure.py 14589 --race DWARF
 ```
 
 | Parameter | Description |
@@ -256,12 +256,12 @@ python scripts/dwarf.py 14589 --race DWARF
 
 Shows: identity, status, entity memberships, positions held, top skills, family, held artifacts, goals, event summary.
 
-#### `scripts/dwarf_relations.py` — Relationships
+#### `scripts/figure_relations.py` — Relationships
 
 ```
-python scripts/dwarf_relations.py "atir roughlearning"
-python scripts/dwarf_relations.py "atir roughlearning" --tree
-python scripts/dwarf_relations.py 14589 --all
+python scripts/figure_relations.py "atir roughlearning"
+python scripts/figure_relations.py "atir roughlearning" --tree
+python scripts/figure_relations.py 14589 --all
 ```
 
 | Parameter | Description |
@@ -272,12 +272,12 @@ python scripts/dwarf_relations.py 14589 --all
 
 Shows: family (spouse, children, parents), deity links, social links (master/apprentice/companion), entity relationships, relationship events.
 
-#### `scripts/dwarf_skills.py` — Skills
+#### `scripts/figure_skills.py` — Skills
 
 ```
-python scripts/dwarf_skills.py "atir roughlearning"
-python scripts/dwarf_skills.py "ushrir beardedspears" --min-level Skilled
-python scripts/dwarf_skills.py "atir roughlearning" --compare "ushrir beardedspears"
+python scripts/figure_skills.py "atir roughlearning"
+python scripts/figure_skills.py "ushrir beardedspears" --min-level Skilled
+python scripts/figure_skills.py "atir roughlearning" --compare "ushrir beardedspears"
 ```
 
 | Parameter | Description |

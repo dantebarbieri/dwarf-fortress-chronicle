@@ -1,14 +1,14 @@
 """
-filter_fortress.py — Site/fortress profile from DF Legends XML.
+site.py — Site/fortress profile from DF Legends XML.
 
 Displays site overview, structures, owning entities, notable residents,
 artifacts, and event timeline for a named fortress or site.
 
 Usage:
-    python scripts/filter_fortress.py luregold
-    python scripts/filter_fortress.py 42 --json
-    python scripts/filter_fortress.py luregold --events --year-from 100
-    python scripts/filter_fortress.py luregold --structures --residents
+    python scripts/site.py luregold
+    python scripts/site.py 42 --json
+    python scripts/site.py luregold --events --year-from 100
+    python scripts/site.py luregold --structures --residents
 """
 
 from __future__ import annotations

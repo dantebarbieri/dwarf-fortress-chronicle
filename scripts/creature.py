@@ -1,11 +1,11 @@
 """
-filter_creature.py — Look up a specific creature / historical figure by name
+creature.py — Look up a specific creature / historical figure by name
 and display everything the Legends XML knows about them.
 
 Usage:
-    python scripts/filter_creature.py "atir"
-    python scripts/filter_creature.py 12345 --events --kills
-    python scripts/filter_creature.py "goblin" --list --json
+    python scripts/creature.py "atir"
+    python scripts/creature.py 12345 --events --kills
+    python scripts/creature.py "goblin" --list --json
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Allow running from the DF root directory:  python scripts/filter_creature.py …
+# Allow running from the DF root directory:  python scripts/creature.py …
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from scripts.legends_parser import (
@@ -269,7 +269,7 @@ def _build_json_output(
 
 
 def main() -> None:
-    """Entry point for filter_creature CLI."""
+    """Entry point for creature CLI."""
     configure_output()
     ap = argparse.ArgumentParser(
         description="Look up a creature / historical figure in the Legends XML.",

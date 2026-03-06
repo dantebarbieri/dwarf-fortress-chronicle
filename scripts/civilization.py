@@ -1,11 +1,11 @@
 """
-filter_civilization.py — Look up a specific civilization / entity by name or ID
+civilization.py — Look up a specific civilization / entity by name or ID
 and display its members, wars, sites, and recent events from the Legends XML.
 
 Usage:
-    python scripts/filter_civilization.py "guilds of clinching"
-    python scripts/filter_civilization.py 42 --members --wars --sites
-    python scripts/filter_civilization.py "clinching" --json --year-from 90
+    python scripts/civilization.py "guilds of clinching"
+    python scripts/civilization.py 42 --members --wars --sites
+    python scripts/civilization.py "clinching" --json --year-from 90
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-# Allow running from the DF root directory:  python scripts/filter_civilization.py …
+# Allow running from the DF root directory:  python scripts/civilization.py …
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from scripts.legends_parser import (
@@ -322,7 +322,7 @@ def _build_json_output(
 
 
 def main() -> None:
-    """Entry point for filter_civilization CLI."""
+    """Entry point for civilization CLI."""
     configure_output()
     ap = argparse.ArgumentParser(
         description="Look up a civilization / entity in the Legends XML.",
